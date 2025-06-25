@@ -1,0 +1,82 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f7f6;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 25px;
+    font-size: 1.8em;
+}
+
+.input-group, .result-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: bold;
+}
+
+input[type="number"],
+input[type="text"] {
+    width: calc(100% - 20px); /* Ajusta el ancho para el padding */
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box; /* Incluye padding y borde en el ancho total */
+    background-color: #e9ecef; /* Un ligero fondo gris para los campos de entrada */
+}
+
+/* Estilo específico para campos de solo lectura (resultados) */
+input[type="text"][readonly] {
+    background-color: #f8f9fa; /* Fondo más claro para resultados */
+    cursor: default; /* No muestra cursor de texto */
+    font-weight: bold;
+    color: #333;
+}
+
+/* Resaltar el campo de apuesta que se está usando como referencia */
+.highlight-input {
+    border-color: #007bff !important; /* Borde azul */
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Sombra azul */
+}
+
+/* Estilos para el div de estado de actualización */
+#status {
+    margin-top: 20px;
+    font-size: 0.85em;
+    color: #6c757d;
+    text-align: center;
+}
+
+/* Media queries para pantallas más pequeñas */
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+    }
+    h1 {
+        font-size: 1.5em;
+    }
+}

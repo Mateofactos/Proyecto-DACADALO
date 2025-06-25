@@ -1,0 +1,9 @@
+# netlify.toml
+
+[build]
+  publish = "public"  # Le dice a Netlify que la carpeta "public" es tu frontend
+  command = "echo 'Deploying frontend and functions...'" # Un comando simple de construcción
+
+[functions]
+  directory = "functions" # Le dice a Netlify dónde están tus funciones sin servidor
+  node_bundler = "esbuild" # Un bundler rápido para Node.js
