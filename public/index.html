@@ -3,48 +3,605 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CashBet</title>
-    <link rel="stylesheet" href="style.css"> </head>
+    <title>CASH'BET</title>
+    <style>
+        /* General Body and HTML styling */
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Segoe UI', 'Roboto', Arial, sans-serif; /* Fuentes modernas y limpias */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Fondo de la página - Gris Oscuro Suave */
+            background-color: #2c2c2c; /* Un gris oscuro suave para el fondo general */
+            color: #f0f0f0; /* Color de texto general muy claro para el contraste */
+        }
+
+        /* Main Calculator Card Styling */
+        .card {
+            background-color: #0a0a0a; /* Fondo negro profundo para la tarjeta principal (la calculadora) */
+            border: 2px solid #FFD100; /* Borde amarillo Caterpillar vibrante para la calculadora */
+            border-radius: 10px; /* Bordes ligeramente más redondeados */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6); /* Sombra más pronunciada */
+            width: 100%;
+            max-width: 450px; /* Limita el ancho máximo de la calculadora */
+            padding: 1.8rem; /* Un poco más de padding interno */
+            box-sizing: border-box; /* Incluye padding y borde en el ancho/alto */
+            color: #f0f0f0; /* Texto claro para el interior de la tarjeta */
+        }
+
+        /* Titles and Labels */
+        h1 {
+            color: #FFD100; /* Título principal en amarillo Caterpillar */
+            text-align: center;
+            margin-bottom: 1.8rem; /* Más espacio debajo del título */
+            font-weight: 700; /* Más negrita */
+            letter-spacing: 0.05em; /* Un poco de espacio entre letras para el título */
+            font-size: 1.4rem; /* Tamaño de título principal */
+        }
+
+        label {
+            color: #cccccc; /* Un gris más claro para las etiquetas, fácil de leer sobre el fondo oscuro */
+            font-weight: 600; /* Semi-negrita */
+            margin-bottom: 0.02rem; /* Más reducido: Espacio entre etiqueta e input */
+            font-size: 0.65rem; /* Etiquetas más pequeñas */
+        }
+
+        /* Form Controls (Inputs) Styling - Las casillas de input son amarillas */
+        .form-control {
+            background-color: #FFD100; /* Fondo amarillo Caterpillar para los inputs (cuotas, apuestas, etc.) */
+            border: 1px solid #777777; /* Borde gris oscuro para los inputs */
+            color: #333333; /* Color de texto oscuro (casi negro) dentro de los inputs para un alto contraste */
+            font-weight: 500; /* Peso de la fuente para el texto del input */
+            border-radius: 4px; /* Bordes ligeramente redondeados para los inputs */
+            height: calc(1.5em + 0.1rem + 2px); /* Altura de input más pequeña */
+            padding: 0.08rem 0.25rem; /* Relleno más pequeño */
+            font-size: 0.72rem; /* Texto más pequeño dentro de los inputs */
+        }
+
+        .form-control::placeholder {
+            color: #666666; /* Color más suave para el placeholder, pero aún visible */
+        }
+
+        .form-control:focus {
+            background-color: #ffe86b; /* Un amarillo ligeramente más claro al enfocar */
+            border-color: #000000; /* Borde negro al enfocar */
+            box-shadow: 0 0 0 0.2rem rgba(255, 209, 0, 0.4); /* Sombra vibrante al enfocar */
+        }
+
+        /* Readonly fields (results) styling - distinct color for visibility */
+        .form-control[readonly] {
+            background-color: #333333; /* Fondo negro/gris oscuro para los resultados */
+            color: #00FF99; /* Un verde neón vibrante para los resultados de ganancia */
+            font-weight: bold;
+            letter-spacing: 0.02em; /* Ligero espacio entre letras para los resultados */
+        }
+        /* Color para surebet positiva */
+        .form-control[readonly].surebet-positive {
+            color: #00FF99; /* Verde brillante */
+        }
+        /* Color para overround (surebet negativa) */
+        .form-control[readonly].surebet-negative {
+            color: #FFD100; /* Amarillo Caterpillar */
+        }
+
+
+        /* Button Styling */
+        .btn {
+            font-size: 0.6rem; /* Texto de botón más pequeño */
+            padding: 0.15rem 0.3rem; /* Relleno de botón más pequeño */
+            display: inline-block; /* Asegura que el botón se ajuste al contenido */
+            font-weight: 400; /* Peso de fuente normal */
+            color: #212529; /* Color de texto predeterminado para btn (Bootstrap) */
+            text-align: center; /* Alineación del texto */
+            vertical-align: middle; /* Alineación vertical */
+            user-select: none; /* Evita selección de texto */
+            border: 1px solid transparent; /* Borde transparente por defecto */
+            line-height: 1.5; /* Altura de línea */
+            border-radius: 0.25rem; /* Bordes ligeramente redondeados */
+            transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        }
+        .btn-primary {
+            background-color: #000000; /* Fondo negro para el botón */
+            border-color: #FFD100; /* Borde amarillo Caterpillar para el botón */
+            color: #FFD100; /* Texto amarillo Caterpillar para el botón */
+            font-weight: 600; /* Semi-negrita para el texto del botón */
+            border-radius: 5px; /* Bordes redondeados para el botón */
+            transition: all 0.2s ease-in-out; /* Transición suave para el hover */
+            height: calc(1.5em + 0.1rem + 2px); /* Misma altura que los inputs */
+            width: 100%; /* El botón ocupa todo el ancho de su columna */
+        }
+
+        .btn-primary:hover {
+            background-color: #FFD100; /* Fondo amarillo al pasar el ratón */
+            border-color: #000000; /* Borde negro al pasar el ratón */
+            color: #000000; /* Texto negro al pasar el ratón */
+            box-shadow: 0 0 10px rgba(255, 209, 0, 0.7); /* Sombra brillante al pasar el ratón */
+        }
+
+        /* Specific elements that need custom colors not covered by general rules */
+        .house-label-text {
+            color: #FFD100; /* Etiquetas de Casa A/B en amarillo Caterpillar */
+            font-weight: 700; /* Más negrita para las etiquetas de casa */
+            text-transform: uppercase;
+            width: 60px; /* Ancho fijo para la etiqueta "Casa A/B" */
+            flex-shrink: 0; /* Evita que se encoja */
+            margin-right: 6px; /* Reducido: Espacio después de la etiqueta */
+            padding-top: 0.2rem; /* Ajuste para alinear texto con los campos */
+            font-size: 0.68rem; /* Tamaño de texto de etiquetas de casa */
+        }
+
+        /* Adjustments for fixed/locked odds inputs */
+        .odds-locked {
+            background-color: #a37f00; /* Un amarillo mostaza oscuro para inputs fijados */
+            color: #ffffff; /* Texto blanco para inputs fijados */
+            border-color: #000000; /* Borde negro */
+        }
+
+        /* Ensures Bootstrap's default row/col padding doesn't mess with compactness */
+        /* Estas clases ahora deben ser manejadas por CSS personalizado o eliminadas si no aportan valor sin Bootstrap */
+        .container {
+            width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+        @media (min-width: 576px) {
+            .container {
+                max-width: 540px;
+            }
+        }
+        @media (min-width: 768px) {
+            .container {
+                max-width: 720px;
+            }
+        }
+        @media (min-width: 992px) {
+            .container {
+                max-width: 960px;
+            }
+        }
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1140px;
+            }
+        }
+
+        .mt-5 { margin-top: 3rem !important; }
+        .mb-4 { margin-bottom: 1.5rem !important; }
+        .text-center { text-align: center !important; }
+        .p-4 { padding: 1.5rem !important; }
+        .shadow-sm { box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important; } /* Ajuste simplificado */
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-right: -15px;
+            margin-left: -15px;
+        }
+        .col-12 {
+            flex: 0 0 100%;
+            max-width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+
+
+        .row {
+            margin-left: 0;
+            margin-right: 0;
+        }
+        .col-12 {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Ensure the main container for houses takes full width within the card */
+        .house-section-full {
+            width: 100%;
+            margin-bottom: 8px; /* Espacio entre secciones de casa */
+            border-bottom: none; /* Elimina el borde inferior entre las secciones de casa */
+        }
+        .house-section-full:last-of-type {
+            margin-bottom: 0; /* Sin margen excesivo en la última sección */
+        }
+
+        /* Ajustes de compactación para los form-group */
+        .form-group {
+            margin-bottom: 0.1rem; /* Más reducido: Espacio entre grupos de formulario */
+            /* Se añade display y margin para simular el comportamiento de form-group de Bootstrap */
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1rem; /* Margen por defecto de Bootstrap para form-group */
+        }
+
+
+        /* --- Estilos para los Checkboxes de Fijar Cuota --- */
+        .odds-lock-checkbox-container {
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Centrar el checkbox */
+            height: calc(1.5em + 0.1rem + 2px); /* Altura similar a la de un input */
+            margin-top: 0.15rem; /* Alineado con el margen de botones si existieran */
+        }
+        .odds-lock-checkbox {
+            margin: 0; /* Eliminar margen predeterminado */
+            transform: scale(0.8); /* Ligeramente más pequeño */
+            cursor: pointer;
+        }
+
+        /* --- Alineación de la línea principal de cada casa --- */
+        .main-house-line {
+            display: flex; /* Usar flexbox para alineación horizontal */
+            align-items: flex-start; /* Alinear elementos al inicio (arriba) */
+            margin-bottom: 4px; /* Aún más reducido: Espacio entre líneas de casas */
+        }
+
+        /* Asegurar que los grupos de formulario dentro de main-house-line sean flexibles */
+        .main-house-line .form-group {
+            flex: 1; /* Permite que tomen el espacio disponible */
+            margin-right: 5px; /* Aún más reducido: Espacio entre campos */
+            min-width: 60px; /* Más reducido: Ancho mínimo para los inputs */
+            max-width: 80px; /* Ancho máximo para los inputs (para 5 dígitos) */
+            margin-bottom: 0; /* Anula el margin-bottom del .form-group general */
+        }
+        /* Ajuste específico para el form-group de la cuota (sin botón, solo checkbox) */
+        .main-house-line .form-group.odds-group {
+            min-width: 60px; /* Se puede reducir más sin el botón grande */
+            max-width: 80px;
+        }
+
+        .main-house-line .form-group:last-child {
+            margin-right: 0; /* Sin margen en el último campo */
+        }
+
+        /* Los campos de resultado (% Ganancia, Monto Ganancia) serán más pequeños */
+        .main-house-line .form-group.result-field {
+            flex: 0 0 65px; /* Más reducido: Ancho fijo para campos de resultado */
+            max-width: 75px; /* Más reducido: Ancho máximo para campos de resultado */
+        }
+
+        /* Ajuste para los checkboxes: no necesitan margen como los botones */
+        .form-group label + .form-control {
+            margin-bottom: 0; /* Elimina margen entre label e input */
+        }
+
+        /* --- Contenedor de Total Invertido y Botón Refrescar --- */
+        .summary-and-button-line {
+            display: flex;
+            align-items: flex-end; /* Alinea los elementos a la parte inferior */
+            margin-top: 5px; /* Espacio superior */
+            margin-bottom: 0; /* Sin margen inferior */
+            width: 100%; /* Ocupa todo el ancho */
+        }
+
+        .summary-and-button-line .filler-group {
+            visibility: hidden; /* Hace el div invisible pero mantiene su espacio */
+            margin-right: 5px; /* El mismo margen que entre los campos de la línea principal */
+        }
+
+        .summary-and-button-line .filler-group.label-col {
+            flex: 0 0 60px; /* Ancho de la etiqueta House A/B */
+            max-width: 60px;
+            margin-right: 6px; /* Margen de la etiqueta */
+        }
+
+        .summary-and-button-line .filler-group.odds-col {
+            flex: 0 0 80px; /* Ancho de la Cuota */
+            max-width: 80px;
+        }
+
+        .total-investment-group {
+            flex: 0 0 80px; /* Ancho del campo Apuesta 2 */
+            max-width: 80px;
+            margin-right: 5px; /* Espacio entre Total Invertido y Ganancia */
+        }
+
+        #totalInvestment {
+            text-align: right; /* Alinea el texto a la derecha dentro del campo */
+        }
+
+        .refresh-button-wrapper {
+            flex: 0 0 75px; /* Ancho del campo %Ganancia / Monto Ganancia */
+            max-width: 75px;
+            text-align: right; /* Alinea el botón a la derecha dentro de su celda */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 576px) {
+            .main-house-line {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .house-label-text {
+                width: auto;
+                margin-right: 0;
+                margin-bottom: 0.4rem;
+                padding-top: 0;
+            }
+            .main-house-line .form-group {
+                margin-right: 0;
+                margin-bottom: 0.6rem;
+                max-width: none;
+                min-width: unset;
+            }
+            .main-house-line .form-group:last-child {
+                margin-bottom: 0;
+            }
+            .summary-and-button-line {
+                flex-wrap: wrap;
+                justify-content: center;
+                margin-left: 0;
+                width: 100%;
+                margin-top: 10px;
+                border-top: 1px solid #4a4a70;
+                padding-top: 6px;
+            }
+            .summary-and-button-line .filler-group {
+                display: none;
+            }
+            .total-investment-group {
+                width: 50%;
+                max-width: none;
+                margin-left: 0;
+                margin-right: 0;
+                order: 1;
+            }
+            .refresh-button-wrapper {
+                width: 100%;
+                height: auto;
+                margin-top: 8px;
+                margin-left: 0;
+                order: 2;
+                text-align: center;
+            }
+            #refreshOddsBtn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
 <body>
-    <div class="container">
-        <h1>CashBet</h1>
+    <div class="container mt-5">
+        <h1 class="mb-4 text-center">CASH'BET</h1>
+        <div class="card p-4 shadow-sm">
 
-        <div class="input-group">
-            <label for="odds1">Cuota Casa 1:</label>
-            <input type="number" id="odds1" step="0.01" placeholder="Ej: 1.80">
-        </div>
+            <div class="row house-section-full">
+                <div class="col-12">
+                    <div class="main-house-line">
+                        <div class="house-label-text">Casa A</div>
+                        <div class="form-group odds-group">
+                            <label for="odds1">Cuota 1</label>
+                            <input type="number" step="0.01" class="form-control" id="odds1" placeholder="Ej: 1.85">
+                            <div class="odds-lock-checkbox-container">
+                                <input type="checkbox" id="lockOdds1" class="odds-lock-checkbox">
+                                <label for="lockOdds1" style="font-size: 0.65rem; margin-left: 0.2rem; margin-bottom: 0;">Fijar Cuota</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="betAmount1">Apuesta 1</label>
+                            <input type="number" step="0.01" class="form-control" id="betAmount1" placeholder="Ej: 100">
+                        </div>
+                        <div class="form-group result-field">
+                            <label for="profitInCurrency">Ganancia (S/)</label>
+                            <input type="text" class="form-control" id="profitInCurrency" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        <div class="input-group">
-            <label for="odds2">Cuota Casa 2:</label>
-            <input type="number" id="odds2" step="0.01" placeholder="Ej: 2.20">
-        </div>
+            <div class="row house-section-full">
+                <div class="col-12">
+                    <div class="main-house-line">
+                        <div class="house-label-text">Casa B</div>
+                        <div class="form-group odds-group">
+                            <label for="odds2">Cuota 2</label>
+                            <input type="number" step="0.01" class="form-control" id="odds2" placeholder="Ej: 2.15">
+                            <div class="odds-lock-checkbox-container">
+                                <input type="checkbox" id="lockOdds2" class="odds-lock-checkbox">
+                                <label for="lockOdds2" style="font-size: 0.65rem; margin-left: 0.2rem; margin-bottom: 0;">Fijar Cuota</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="betAmount2">Apuesta 2</label>
+                            <input type="number" step="0.01" class="form-control" id="betAmount2" placeholder="Calculada">
+                        </div>
+                        <div class="form-group result-field">
+                            <label for="surebetPercentageDisplay">%</label> <input type="text" class="form-control" id="surebetPercentageDisplay" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        <div class="input-group">
-            <label for="betAmount1">Monto a Apostar Casa 1 (S/):</label>
-            <input type="number" id="betAmount1" step="0.01" placeholder="Ej: 100">
-        </div>
+            <div class="row summary-and-button-line">
+                <div class="form-group filler-group label-col"></div>
+                <div class="form-group filler-group odds-col"></div>
 
-        <div class="input-group">
-            <label for="betAmount2">Monto a Apostar Casa 2 (S/):</label>
-            <input type="number" id="betAmount2" step="0.01" placeholder="Calculado">
-        </div>
+                <div class="form-group total-investment-group">
+                    <label for="totalInvestment">Total Invertido</label>
+                    <input type="text" class="form-control" id="totalInvestment" readonly>
+                </div>
 
-        <div class="result-group">
-            <label for="totalInvestment">Inversión Total:</label>
-            <input type="text" id="totalInvestment" readonly>
-        </div>
+                <div class="form-group refresh-button-wrapper">
+                    <button class="btn btn-primary" id="refreshOddsBtn">Refrescar</button>
+                </div>
+            </div>
 
-        <div class="result-group">
-            <label for="guaranteedProfit">Ganancia Garantizada:</label>
-            <input type="text" id="guaranteedProfit" readonly>
-        </div>
-
-        <div class="result-group">
-            <label for="surebetPercentage">Porcentaje de Arbitraje:</label>
-            <input type="text" id="surebetPercentage" readonly>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const odds1Input = document.getElementById('odds1');
+            const betAmount1Input = document.getElementById('betAmount1');
+            const profitInCurrencyInput = document.getElementById('profitInCurrency');
+            const lockOdds1Checkbox = document.getElementById('lockOdds1');
+
+            const odds2Input = document.getElementById('odds2');
+            const betAmount2Input = document.getElementById('betAmount2');
+            const surebetPercentageDisplayInput = document.getElementById('surebetPercentageDisplay');
+            const lockOdds2Checkbox = document.getElementById('lockOdds2');
+
+            const totalInvestmentInput = document.getElementById('totalInvestment');
+            const refreshOddsBtn = document.getElementById('refreshOddsBtn');
+
+            let lastBetInputChanged = null;
+
+            // Función para calcular y mostrar el Porcentaje de Surebet/Overround
+            function calculateSurebetPercentage() {
+                let odds1 = parseFloat(odds1Input.value);
+                let odds2 = parseFloat(odds2Input.value);
+
+                // Limpiar el campo del porcentaje al recalcular
+                surebetPercentageDisplayInput.value = '';
+                surebetPercentageDisplayInput.classList.remove('surebet-positive', 'surebet-negative');
+
+                if (isNaN(odds1) || odds1 <= 1 || isNaN(odds2) || odds2 <= 1) {
+                    return; // No hay cuotas válidas para calcular el %
+                }
+
+                let impliedProbability1 = 1 / odds1;
+                let impliedProbability2 = 1 / odds2;
+                let totalImpliedProbability = impliedProbability1 + impliedProbability2;
+
+                let surebetPercentage = (1 - totalImpliedProbability) * 100;
+
+                // Mostrar solo el porcentaje numérico
+                surebetPercentageDisplayInput.value = surebetPercentage.toFixed(2) + '%';
+
+                // Aplicar color según si es positivo (surebet) o negativo (overround)
+                if (surebetPercentage > 0) {
+                    surebetPercentageDisplayInput.classList.add('surebet-positive');
+                } else {
+                    surebetPercentageDisplayInput.classList.add('surebet-negative');
+                }
+            }
+
+            // Función principal para calcular la surebet con montos y la ganancia en moneda
+            function calculateFullSurebet() {
+                let odds1 = parseFloat(odds1Input.value);
+                let odds2 = parseFloat(odds2Input.value);
+
+                let betAmount1 = parseFloat(betAmount1Input.value);
+                let betAmount2 = parseFloat(betAmount2Input.value);
+
+                // Limpiar campos de resultado de apuesta específica (Ganancia S/ y Total Invertido)
+                profitInCurrencyInput.value = '';
+                profitInCurrencyInput.classList.remove('surebet-positive', 'surebet-negative');
+                totalInvestmentInput.value = '';
+
+                // Si no hay cuotas válidas, no se puede calcular la surebet con montos
+                if (isNaN(odds1) || odds1 <= 1 || isNaN(odds2) || odds2 <= 1) {
+                    // Si las cuotas no son válidas, limpiamos los montos de apuesta también
+                    betAmount1Input.value = '';
+                    betAmount2Input.value = '';
+                    return;
+                }
+
+                let totalInvestment = 0;
+                let payout = 0;
+                let calculatedBetAmount = 0;
+
+                let hasValidBetInput = false;
+                if (lastBetInputChanged === betAmount1Input && !isNaN(betAmount1) && betAmount1 > 0) {
+                    hasValidBetInput = true;
+                    payout = betAmount1 * odds1;
+                    calculatedBetAmount = payout / odds2;
+                    betAmount2Input.value = calculatedBetAmount.toFixed(2);
+                    totalInvestment = betAmount1 + calculatedBetAmount;
+
+                } else if (lastBetInputChanged === betAmount2Input && !isNaN(betAmount2) && betAmount2 > 0) {
+                    hasValidBetInput = true;
+                    payout = betAmount2 * odds2;
+                    calculatedBetAmount = payout / odds1;
+                    betAmount1Input.value = calculatedBetAmount.toFixed(2);
+                    totalInvestment = betAmount2 + calculatedBetAmount;
+                }
+
+                if (hasValidBetInput) {
+                    totalInvestmentInput.value = totalInvestment.toFixed(2);
+
+                    let actualProfit = payout - totalInvestment;
+
+                    if (actualProfit > 0) {
+                        profitInCurrencyInput.value = actualProfit.toFixed(2) + ' S/';
+                        profitInCurrencyInput.classList.add('surebet-positive');
+                    } else {
+                        profitInCurrencyInput.value = actualProfit.toFixed(2) + ' S/ (Pérdida)';
+                        profitInCurrencyInput.classList.add('surebet-negative');
+                    }
+                } else {
+                    // Si no hay montos de apuesta válidos después de procesar, limpiar los campos de apuesta
+                    if (betAmount1Input.value !== '') betAmount1Input.value = '';
+                    if (betAmount2Input.value !== '') betAmount2Input.value = '';
+                }
+            }
+
+            // --- Manejo de la fijación de cuotas ---
+            function toggleOddsLock(checkbox, input) {
+                if (checkbox.checked) {
+                    input.setAttribute('readonly', true);
+                    input.classList.add('odds-locked');
+                } else {
+                    input.removeAttribute('readonly');
+                    input.classList.remove('odds-locked');
+                }
+            }
+
+            // --- Event Listeners ---
+            // Las cuotas deben recalcular ambos: porcentaje y la surebet completa
+            odds1Input.addEventListener('input', function() {
+                calculateSurebetPercentage();
+                calculateFullSurebet();
+            });
+            odds2Input.addEventListener('input', function() {
+                calculateSurebetPercentage();
+                calculateFullSurebet();
+            });
+
+            // Los montos de apuesta
+            betAmount1Input.addEventListener('input', function() {
+                lastBetInputChanged = betAmount1Input;
+                if (betAmount2Input.value !== '') {
+                    betAmount2Input.value = '';
+                }
+                calculateFullSurebet();
+            });
+
+            betAmount2Input.addEventListener('input', function() {
+                lastBetInputChanged = betAmount2Input;
+                if (betAmount1Input.value !== '') {
+                    betAmount1Input.value = '';
+                }
+                calculateFullSurebet();
+            });
+
+            // Checkboxes de fijar cuota
+            lockOdds1Checkbox.addEventListener('change', function() {
+                toggleOddsLock(lockOdds1Checkbox, odds1Input);
+                calculateSurebetPercentage();
+                calculateFullSurebet();
+            });
+
+            lockOdds2Checkbox.addEventListener('change', function() {
+                toggleOddsLock(lockOdds2Checkbox, odds2Input);
+                calculateSurebetPercentage();
+                calculateFullSurebet();
+            });
+
+            // Botón de refrescar
+            refreshOddsBtn.addEventListener('click', function() {
+                calculateSurebetPercentage();
+                calculateFullSurebet();
+                alert('Resultados actualizados.');
+            });
+
+            // Calcular resultados al cargar la página para inicializar
+            calculateSurebetPercentage();
+            calculateFullSurebet();
+        });
+    </script>
 </body>
 </html>
